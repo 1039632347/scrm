@@ -6,7 +6,7 @@
 		<div class="layui-col-md12">
 			<div class="layui-card">
 				<div class="layui-card-header">
-					角色管理
+					客户管理
 					<!-- 使用自定义标签在页面上判断 button或是超链接 是否可以显示 -->
 					<%-- <auth:have url="role" method="post"> --%>
 					<!-- 新增按钮 开始 -->
