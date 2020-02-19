@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.situ.scrm.dictionaries.dao.DictionariesDao">
+<sql id="dictionarie_base_column">
+		PARENT_KEY,DIC_KEY,DIC_CODE,DIC_VALUE,ORDER_INDEX,HAS_CHILD,ACTIVE_FLAG,CREATE_BY,CREATE_DATE
+	</sql>
+<sql id="dictionarie_base_select">
+		SELECT ROW_ID,
+		<include refid="dictionarie_base_column" />
+		, UPDATE_BY,UPDATE_DATE FROM TB_DICTIONARY WHERE ACTIVE_FLAG = 1
+	</sql>
+
+
+<select id="getByName" resultType="Dictionaries">
+		<include refid="dictionarie_base_select" />
+		AND DIC_VALUE = #{dicValue}
+	</select>
+	
+  <insert id="save" parameterType="Dictionaries" useGeneratedKeys="true" keyProperty="rowId" keyColumn="ROW_ID">
+		INSERT INTO TB_DICTIONARY (PARENT_KEY,DIC_KEY,DIC_CODE,DIC_VALUE,ORDER_INDEX,HAS_CHILD,ACTIVE_FLAG,CREATE_BY,CREATE_DATE)
+		VALUES(#{parentKey},#{dicKey},#{dicCode},#{dicValue},#{orderIndex},#{hasChild},#{activeFlag},#{createBy},#{createDate})
+		
+	</insert>
+   <update id="updateHasChild">
+		UPDATE TB_DICTIONARY SET HAS_CHILD = #{hasChild} WHERE DIC_KEY = #{dicKay}
+	</update>
+<select id="getMaxOrder" resultType="java.lang.Integer" parameterType="Dictionaries">
+		SELECT MAX(ORDER_INDEX) FROM TB_DICTIONARY WHERE ACTIVE_FLAG = 1 AND PARENT_KEY = #{parentKey}
+	</select>
+	<select id="find" resultType="Dictionaries">
+		<include refid="dictionarie_base_select" />
+		ORDER BY ORDER_INDEX
+	</select>
+	<select id="get" resultType="Dictionaries">
+		<include refid="dictionarie_base_select" />
+		AND ROW_ID = #{rowId}
+	</select>
+	<select id="getByKey" resultType="Dictionaries">
+		<include refid="dictionarie_base_select" />
+		AND DIC_KEY = #{dicKey}
+	</select>
+	
+	
+	<delete id="delete">
+		DELETE FROM TB_DICTIONARY WHERE ROW_ID = #{rowId}
+	</delete>
+	
+	<update id="update">
+		UPDATE TB_DICTIONARY
+		<set>
+			<if test="parentKey != null">
+				PARENT_KEY = #{parentKey},
+			</if>
+			<if test="dicKey != null">
+				DIC_KEY = #{dicKey},
+			</if>			
+			<if test="dicCode != null">
+				DIC_CODE = #{dicCode},
+			</if>
+			<if test="dicValue != null">
+				DIC_VALUE = #{dicValue},
+			</if>
+			<if test="orderIndex != null">
+				ORDER_INDEX = #{orderIndex},
+			</if>			
+			
+			<if test="hasChild != null">
+				HAS_CHILD = #{hasChild},
+			</if>
+			<if test="activeFlag != null">
+				ACTIVE_FLAG = #{activeFlag},
+			</if>
+			<if test="createBy != null">
+				CREATE_BY = #{createBy},
+			</if>
+			<if test="createDate != null">
+				CREATE_DATE = #{createDate},
+			</if>
+			<if test="updateBy != null">
+				UPDATE_BY = #{updateBy},
+			</if>
+			<if test="updateDate != null">
+				UPDATE_DATE = #{updateDate},
+			</if>
+		</set>
+		WHERE ROW_ID = #{rowId}
+	</update>
+	
+</mapper>
