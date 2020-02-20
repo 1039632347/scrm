@@ -40,7 +40,7 @@ public class SysCountUtils implements Serializable {
 	 * @return
 	 */
 	@Transactional
-	public String buildDictKey0() {
+	public String buildRescCode3() {
 		// 要查询的字段名称 INDEX1
 		String columnName = SysCount.INDEX1;
 		Calendar calendar = Calendar.getInstance();
@@ -58,12 +58,30 @@ public class SysCountUtils implements Serializable {
 
 	/**
 	 * @Title: buildRescCode
-	 * @Description:(得到资源的编号)
+	 * @Description:(得到资源的编号INDEX2)
 	 * @return
 	 */
 	public String buildDictKey() {
 		// 要查询的字段名称 INDEX1
 		String columnName = SysCount.INDEX2;
+		StringBuffer buffer = new StringBuffer(S);
+		// 通过序列表的DAO查询出当前序列的数 :比如说当前序列 是 2
+		int index = sysCountDao.get(columnName);
+		// 将当前的序列 加一 。然后 append到numBuffer 中
+		int sequnce = index + 1;
+		buffer.append(FOMATER_000.format(sequnce));
+		// 将这个序列的最新值更新回数据库。
+		sysCountDao.updatePlus(columnName, sequnce);
+		return buffer.toString();
+	}
+	/**
+	 * @Title: buildRescCode
+	 * @Description:(得到资源的编号INDEX1)
+	 * @return
+	 */
+	public String buildRescCode1() {
+		// 要查询的字段名称 INDEX1
+		String columnName = SysCount.INDEX1;
 		StringBuffer buffer = new StringBuffer(S);
 		// 通过序列表的DAO查询出当前序列的数 :比如说当前序列 是 2
 		int index = sysCountDao.get(columnName);

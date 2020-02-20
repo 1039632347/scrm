@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.situ.scrm.setup.dao.SysSetupDao">
+  <sql id="set_base_column">
+		SYSSETUP1,SYSSETUP2,SYSSETUP3,SYSSETUP4,ACTIVE_FLAG,CREATE_BY,CREATE_DATE
+	</sql>
+	<sql id="set_base_select">
+		SELECT ROW_ID,
+		<include refid="set_base_column" />
+		, UPDATE_BY,UPDATE_DATE FROM TB_SYS_SET WHERE ACTIVE_FLAG = 1
+	</sql>
+
+<insert id="save" useGeneratedKeys="true" keyProperty="rowId" keyColumn="ROW_ID">
+		INSERT INTO TB_SYS_SET (
+		<include refid="set_base_column" />
+		)
+		VALUES (#{sysSetup1},#{sysSetup2},#{sysSetup3},#{sysSetup4},#{activeFlag},#{createBy},#{createDate})
+	</insert>
+<select id="getSysSetup" resultType="SysSetup">
+		<include refid="set_base_select" />
+
+	</select>
+
+
+	<update id="update">
+		UPDATE TB_SYS_SET
+		<set>
+			<if test="sysSetup1 != null">
+				SYSSETUP1 = #{sysSetup1},
+			</if>
+			<if test="sysSetup2 != null">
+				SYSSETUP2 = #{sysSetup2},
+			</if>
+			<if test="sysSetup3 != null">
+				SYSSETUP3 = #{sysSetup3},
+			</if>
+			<if test="sysSetup4 != null">
+				SYSSETUP4 = #{sysSetup4},
+			</if>			
+			<if test="activeFlag != null">
+				ACTIVE_FLAG = #{activeFlag},
+			</if>
+			<if test="createBy != null">
+				CREATE_BY = #{createBy},
+			</if>
+			<if test="createDate != null">
+				CREATE_DATE = #{createDate},
+			</if>
+			<if test="updateBy != null">
+				UPDATE_BY = #{updateBy},
+			</if>
+			<if test="updateDate != null">
+				UPDATE_DATE = #{updateDate},
+			</if>
+		</set>
+	</update>
+	<!-- 
+	
+	<select id="find" resultType="SysResource">
+		<include refid="resource_base_select" />
+		ORDER BY RESC_ORDER
+	</select>
+	
+	<select id="getByCode" resultType="SysResource">
+		<include refid="resource_base_select" />
+		AND RESC_CODE = #{rescCode}
+	</select>
+	<select id="getByNameAndParent" resultType="SysResource">
+		<include refid="resource_base_select" />
+		AND RESC_NAME = #{rescName} AND PARENT_CODE = #{parentCode}
+	</select>
+	<select id="getMaxOrder" resultType="java.lang.Integer">
+		SELECT MAX(RESC_ORDER) FROM BT_SYS_SYS_RESOURCE WHERE ACTIVE_FLAG = 1 AND PARENT_CODE = #{parentCode}
+	</select>
+	<select id="findByParent" resultType="SysResource">
+		<include refid="resource_base_select" />
+		AND PARENT_CODE = #{parentCode}
+	</select>
+	<select id="findIdByParent" resultType="java.lang.Long">
+		SELECT ROW_ID FROM BT_SYS_SYS_RESOURCE WHERE ACTIVE_FLAG = 1 AND PARENT_CODE = #{parentCode}
+	</select>
+	<update id="updateHasChild">
+		UPDATE BT_SYS_SYS_RESOURCE SET HAS_CHILD = #{hasChild} WHERE RESC_CODE = #{rescCode}
+	</update>
+	<delete id="delete">
+		DELETE FROM BT_SYS_SYS_RESOURCE WHERE ROW_ID = #{rowId}
+	</delete> -->
+</mapper>
