@@ -42,7 +42,7 @@ public class SysCountUtils implements Serializable {
 	@Transactional
 	public String buildRescCode3() {
 		// 要查询的字段名称 INDEX1
-		String columnName = SysCount.INDEX1;
+		String columnName = SysCount.INDEX3;
 		Calendar calendar = Calendar.getInstance();
 		StringBuffer numBuffer = new StringBuffer();
 		numBuffer.append(FORMARt_YY_MM_DD.format(calendar.getTime()));
