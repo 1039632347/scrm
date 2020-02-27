@@ -1,15 +1,11 @@
 package com.situ.scrm.setup.controller;
-
 import java.io.Serializable;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
-
-import com.situ.scrm.dictionaries.domain.Dictionaries;
 import com.situ.scrm.setup.domain.SysSetup;
 import com.situ.scrm.setup.service.SysSetupService;
 
@@ -50,5 +46,6 @@ public class SysSetupController implements Serializable {
 		System.out.println(sysSetup);
 		return sysSetupService.updateSysSetup(sysSetup);
 	}
+
 	
 }

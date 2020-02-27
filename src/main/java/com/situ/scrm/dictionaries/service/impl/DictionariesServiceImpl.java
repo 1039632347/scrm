@@ -14,6 +14,7 @@ import com.situ.scrm.dictionaries.dao.DictionariesDao;
 import com.situ.scrm.dictionaries.domain.Dictionaries;
 import com.situ.scrm.dictionaries.service.DictionariesService;
 import com.situ.scrm.syscount.util.SysCountUtils;
+import com.situ.scrm.sysresource.domain.SysResource;
 
 @Service
 public class DictionariesServiceImpl implements  DictionariesService {
@@ -172,6 +173,31 @@ public class DictionariesServiceImpl implements  DictionariesService {
 	@Override
 	public Long updateDic(Dictionaries dictionaries) {
 		return dictionariesDao.update(dictionaries);
+	}
+
+
+	@Override
+	public List<Dictionaries> DictionariesList() {
+		List<Dictionaries> allDictionaryList = new ArrayList<Dictionaries>();
+		Map<String, List<Dictionaries>> dictionaryMap = buildDictionaryMap();
+		if (dictionaryMap != null) {
+			List<Dictionaries> dictionaryList = dictionaryMap.get(SysResource.DEFAULT_PARENT_CODE);
+			if (dictionaryList != null) {
+				for (Dictionaries dictionary : dictionaryList) {
+					// 判断是否有子数据
+					Integer hasChild = dictionary.getHasChild();
+					// 如果有子数据
+					if (hasChild == 1) {
+						// 通过递归方法(重复调用本身)将所有资源的子数据处理成功。
+						callBackChildList(dictionary, dictionaryMap);
+					}
+					allDictionaryList.add(dictionary);
+				}
+			}
+
+		}
+		
+		return allDictionaryList;
 	}
 
 	

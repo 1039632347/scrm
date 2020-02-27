@@ -1,4 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%
+	if(request.getSession().getAttribute("login_user")==null){
+		response.sendRedirect("login");
+	}
+	%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -38,7 +44,7 @@
 					</dl></li>
 			</ul> -->
 			<ul class="layui-nav layui-layout-right">
-				<li class="layui-nav-item"><a href="javascript:;"> <img src="//tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg" class="layui-nav-img"> 贤心
+				<li class="layui-nav-item"><a href="javascript:;"> <img src="//tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg" class="layui-nav-img"> ${sessionScope.login_user.userName}
 				</a>
 					<dl class="layui-nav-child">
 						<dd>
@@ -48,7 +54,7 @@
 							<a href="">安全设置</a>
 						</dd>
 					</dl></li>
-				<li class="layui-nav-item"><a href="">退了</a></li>
+				<li class="layui-nav-item"><a href="loginOut">退了</a></li>
 			</ul>
 		</div>
 		<!-- 左侧菜单 开始 -->
@@ -56,7 +62,7 @@
 			<div class="layui-side-scroll">
 				<!-- 左侧导航区域（可配合layui已有的垂直导航） -->
 				<ul class="layui-nav layui-nav-tree" lay-filter="test" id="left_nav_tree">
-					<li class="layui-nav-item layui-nav-itemed"><a class="" href="javascript:;">业务管理</a>
+				<!-- 	<li class="layui-nav-item layui-nav-itemed"><a class="" href="javascript:;">业务管理</a>
 						<dl class="layui-nav-child">
 							<dd>
 								<a href="javascript:;">首页</a>
@@ -89,9 +95,29 @@
 							<dd>
 								<a href="syssetup">系统设置</a>
 							</dd>
-						</dl></li>
-					<li class="layui-nav-item"><a href="">云市场</a></li>
-					<li class="layui-nav-item"><a href="">发布商品</a></li>
+						</dl></li> -->
+				<c:if test="${!empty resourceList}">
+						<c:forEach items="${resourceList}" var="resource"
+							varStatus="status">
+							<c:if test="${resource.menuUrl eq 'controller'}"> 
+								<li class="layui-nav-item"><a href="javascript:;"> <i
+										class="layui-icon ${resource.rescIcon}"></i>
+										${resource.rescName}
+								</a> <c:set value="${resource.children}" var="childResourceList"></c:set>
+
+									<dl class="layui-nav-child">
+										<c:if test="${!empty childResourceList}">
+											<c:forEach items="${childResourceList}" var="childResource">
+												<dd>
+													<a href="${childResource.menuUrl}"><i class="layui-icon ${childResource.rescIcon}"></i>
+														${childResource.rescName}</a>
+												</dd>
+											</c:forEach>
+										</c:if>
+									</dl></li>
+							</c:if> 
+						</c:forEach>
+					</c:if>
 				</ul>
 			</div>
 		</div>
